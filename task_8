@@ -1,0 +1,25 @@
+import os
+
+def process_numbers(input_filename):
+    denominator = 73**2 + 29
+    temp_filename = input_filename + ".tmp"
+
+    with open(input_filename, 'r', encoding='utf-8') as fin, \
+         open(temp_filename, 'w', encoding='utf-8') as fout:
+        
+        for line in fin:
+            strip_line = line.strip()
+            if not strip_line:
+                continue
+            
+            try:
+                number = float(strip_line)
+                if number % 7 == 0:
+                    result = number * 100 / denominator
+                    fout.write(f"{result}\n")
+                else:
+                    fout.write(f"{strip_line}\n")
+            except ValueError:
+                fout.write(line)
+
+    os.replace(temp_filename, input_filename)
