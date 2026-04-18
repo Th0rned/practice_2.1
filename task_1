@@ -1,0 +1,34 @@
+lines_to_write = [
+    "Hello world\n",
+    "Python is an amazing language\n",
+    "Просто случайный текст\n",
+    "Я ленивый человек\n",
+    "Это пятая строчка текстового файла\n"
+]
+
+with open("students.txt", "w", encoding="utf-8") as file:
+    file.writelines(lines_to_write)
+
+with open("students.txt", "r", encoding="utf-8") as file:
+    content = file.readlines()
+
+clean_lines = [line.strip() for line in content]
+all_text = "".join(clean_lines).lower()
+
+num_lines = len(clean_lines)
+
+num_words = sum(len(line.split()) for line in clean_lines)
+
+longest_line = max(clean_lines, key=len)
+
+vowels_list = "eyuioaуеыаоэяиюё"
+consonants_list = "qwrtpsdfghjklzxcvbnmйцкнгшщзхфвпрлджчсмтб"
+
+vowels_count = sum(1 for char in all_text if char in vowels_list)
+consonants_count = sum(1 for char in all_text if char in consonants_list)
+
+print(f"Количество строк: {num_lines}")
+print(f"Количество слов: {num_words}")
+print(f"Самая длинная строка: {longest_line}")
+print(f"Всего гласных: {vowels_count}")
+print(f"Всего согласных: {consonants_count}")
