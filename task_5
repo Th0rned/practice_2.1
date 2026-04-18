@@ -1,16 +1,14 @@
 import json
 import os
 
-DB_FILE = 'library.json'
-
 def load_data():
-    if not os.path.exists(DB_FILE):
+    if not os.path.exists('library.json'):
         return []
-    with open(DB_FILE, 'r', encoding='utf-8') as f:
+    with open('library.json', 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def save_data(books):
-    with open(DB_FILE, 'w', encoding='utf-8') as f:
+    with open('library.json', 'w', encoding='utf-8') as f:
         json.dump(books, f, ensure_ascii=False, indent=4)
 
 def show_books(books):
