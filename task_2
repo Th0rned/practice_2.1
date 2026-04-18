@@ -1,22 +1,35 @@
-students_results = []
+def process_students(input_file, output_file):
+    data = (
+        "Иванов Иван:5,4,3,5\n"
+        "Петров Петр:4,3,4,4\n"
+        "Сидорова Мария:5,5,5,5"
+    )
+    with open(input_file, 'w', encoding='utf-8') as f:
+        f.write(data)
 
-with open("students.txt", "r", encoding="utf-8") as f:
-    for line in f:
-        if not line.strip(): continue
+    students_avg = {}
 
-        name, marks_str = line.strip().split(':')
-        marks = list(map(int, marks_str.split(',')))
-        average = sum(marks) / len(marks)
+    try:
+        with open(input_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                
+                name, grades_str = line.strip().split(':')
+                grades = [int(g) for g in grades_str.split(',')]
+                avg_score = sum(grades) / len(grades)
+                students_avg[name] = avg_score
 
-        students_results.append({"name": name, "avg": average})
+        with open(output_file, 'w', encoding='utf-8') as f:
+            for name, avg in students_avg.items():
+                if avg > 4.0:
+                    f.write(f"{name}:{avg:.2f}\n")
 
-with open("result.txt", "w", encoding="utf-8") as f:
-    for student in students_results:
-        if student["avg"] > 4.0:
-            f.write(f"{student['name']}: {student['avg']:.2f}\n")
+        best_student = max(students_avg, key=students_avg.get)
+        worst_student = min(students_avg, key=students_avg.get)
 
-best_student = max(students_results, key=lambda x: x["avg"])
-worst_student = min(students_results, key=lambda x: x["avg"])
+        print(f"Студент с наивысшим средним баллом: {best_student} ({students_avg[best_student]:.2f})")
+        print(f"Студент с низким средним баллом: {worst_student} ({students_avg[worst_student]:.2f})")
 
-print(f"Студент с наивысшим баллом: {best_student['name']} ({best_student['avg']:.2f})")
-print(f"Студент с низким баллом: {worst_student['name']} ({worst_student['avg']:.2f})")
+    except FileNotFoundError:
+        print("Ошибка: Файл не найден.")
