@@ -1,0 +1,52 @@
+import struct
+
+def parse_data_file(file_path):
+    # Форматы для struct (маленький порядок байт '<'):
+    # Header: 4s (сигнатура), H (uint16), I (uint32)
+    header_format = '<4sHI'
+    header_size = struct.calcsize(header_format)
+    
+    # Record: Q (uint64), I (uint32), h (int16), B (uint8)
+    record_format = '<QIhB'
+    record_size = struct.calcsize(record_format)
+
+    try:
+        with open(file_path, 'rb') as f:
+            # Читаем и проверяем заголовок
+            header_data = f.read(header_size)
+            if len(header_data) < header_size:
+                return "Ошибка: Файл слишком мал для заголовка"
+
+            sig, version, count = struct.unpack(header_format, header_data)
+            
+            if sig != b'DATA':
+                return "Ошибка: Неверная сигнатура"
+
+            print(f"Версия: {version}, Записей: {count}")
+
+            temperatures = []
+            active_flags_count = 0
+
+            # Читаем записи
+            for _ in range(count):
+                record_data = f.read(record_size)
+                if len(record_data) < record_size:
+                    break
+                
+                timestamp, record_id, temp_raw, flags = struct.unpack(record_format, record_data)
+                
+                # Обработка данных
+                temperatures.append(temp_raw / 100.0)
+                # Считаем количество установленных бит в байте флагов
+                active_flags_count += bin(flags).count('1')
+
+            # Вывод статистики
+            if temperatures:
+                avg_temp = sum(temperatures) / len(temperatures)
+                print(f"Средняя температура: {avg_temp:.2f} °C")
+                print(f"Всего активных битов во флагах: {active_flags_count}")
+            else:
+                print("Записи не найдены.")
+
+    except FileNotFoundError:
+        print("Ошибка: Файл не найден")
