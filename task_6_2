@@ -31,7 +31,6 @@ def parse_data_file(file_path):
                 timestamp, record_id, temp_raw, flags = struct.unpack(record_format, record_data)
                 
                 temperatures.append(temp_raw / 100.0)
-                # Считаем количество установленных бит в байте флагов
                 active_flags_count += bin(flags).count('1')
 
             if temperatures:
