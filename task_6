@@ -1,6 +1,6 @@
 import struct
 
-def parse_data_file(file_path):
+def parse_data_file('input.txt'):
     header_format = '<4sHI'
     header_size = struct.calcsize(header_format)
 
@@ -8,7 +8,7 @@ def parse_data_file(file_path):
     record_size = struct.calcsize(record_format)
 
     try:
-        with open(file_path, 'rb') as f:
+        with open('input.txt', 'rb') as f:
             header_data = f.read(header_size)
             if len(header_data) < header_size:
                 return "Ошибка: Файл слишком мал для заголовка"
