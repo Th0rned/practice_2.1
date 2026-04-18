@@ -1,11 +1,11 @@
 import os
 
-def process_numbers(input_filename):
+def process_numbers('input.txt'):
     denominator = 73**2 + 29
-    temp_filename = input_filename + ".tmp"
+    temp_filename = 'input.txt' + ".tmp"
 
-    with open(input_filename, 'r', encoding='utf-8') as fin, \
-         open(temp_filename, 'w', encoding='utf-8') as fout:
+    with open('input.txt', 'r', encoding='utf-8') as fin, \
+         open('output.txt', 'w', encoding='utf-8') as fout:
         
         for line in fin:
             strip_line = line.strip()
