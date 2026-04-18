@@ -1,0 +1,52 @@
+import struct
+
+def parse_data_file(file_path):
+    records = []
+    
+    try:
+        with open(file_path, 'rb') as f:
+            header_data = f.read(10)
+            if len(header_data) < 10:
+                print("Файл слишком мал для заголовка")
+                return
+
+            signature, version, count = struct.unpack('<4sHI', header_data)
+
+            if signature != b'DATA':
+                print(f"Неверная сигнатура {signature}")
+                return
+
+            print(f"Версия: {version}, Записей: {count}")
+
+            record_format = '<QIhb'
+            record_size = struct.calcsize(record_format)
+
+            for _ in range(count):
+                record_data = f.read(record_size)
+                if len(record_data) < record_size:
+                    break
+                
+                timestamp, obj_id, raw_temp, flags = struct.unpack(record_format, record_data)
+                
+                records.append({
+                    'timestamp': timestamp,
+                    'id': obj_id,
+                    'temp': raw_temp / 100.0,
+                    'flags': flags
+                })
+
+        if not records:
+            print("Записи не найдены.")
+            return
+
+        temps = [r['temp'] for r in records]
+        avg_temp = sum(temps) / len(temps)
+        
+        total_active_flags = sum(bin(r['flags']).count('1') for r in records)
+
+        print("-" * 30)
+        print(f"Средняя температура: {avg_temp:.2f} °C")
+        print(f"Всего активных флагов: {total_active_flags}")
+
+    except FileNotFoundError:
+        print("Файл не найден.")
