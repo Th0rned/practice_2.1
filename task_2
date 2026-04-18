@@ -1,16 +1,16 @@
-def process_students(input_file, output_file):
+def process_students('input_file', 'output_file'):
     data = (
         "Иванов Иван:5,4,3,5\n"
         "Петров Петр:4,3,4,4\n"
         "Сидорова Мария:5,5,5,5"
     )
-    with open(input_file, 'w', encoding='utf-8') as f:
+    with open('input_file', 'w', encoding='utf-8') as f:
         f.write(data)
 
     students_avg = {}
 
     try:
-        with open(input_file, 'r', encoding='utf-8') as f:
+        with open('input_file', 'r', encoding='utf-8') as f:
             for line in f:
                 if not line.strip():
                     continue
@@ -20,7 +20,7 @@ def process_students(input_file, output_file):
                 avg_score = sum(grades) / len(grades)
                 students_avg[name] = avg_score
 
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open('output_file', 'w', encoding='utf-8') as f:
             for name, avg in students_avg.items():
                 if avg > 4.0:
                     f.write(f"{name}:{avg:.2f}\n")
