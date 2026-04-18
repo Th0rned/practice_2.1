@@ -31,7 +31,8 @@ def add_book(books):
     new_id = max([b['id'] for b in books], default=0) + 1
     title = input("Название книги: ")
     author = input("Автор: ")
-    books.append({"id": new_id, "title": title, "author": author, "available": True})
+    year = input("Год: ")
+    books.append({"id": new_id, "title": title, "author": author, "year": year, "available": True})
     save_data(books)
     print("Книга добавлена!")
 
@@ -70,7 +71,13 @@ def export_available(books):
 def main():
     while True:
         books = load_data()
-        print("\n1. Показать все | 2. Поиск | 3. Добавить | 4. Сменить статус | 5. Удалить | 6. Экспорт | 0. Выход")
+        print("1. Показать все")
+        print("2. Поиск")
+        print("3. Добавить")
+        print("4. Сменить статус")
+        print("5. Удалить")
+        print("6. Экспорт")
+        print("0. Выход")
         choice = input("Выберите действие: ")
         
         if choice == '1': show_books(books)
