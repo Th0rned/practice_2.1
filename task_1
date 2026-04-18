@@ -21,8 +21,8 @@ num_words = sum(len(line.split()) for line in clean_lines)
 
 longest_line = max(clean_lines, key=len)
 
-vowels_list = "eyuioaуеыаоэяиюё"
-consonants_list = "qwrtpsdfghjklzxcvbnmйцкнгшщзхфвпрлджчсмтб"
+glasnie_list = "eyuioaуеыаоэяиюё"
+soglasnie_list = "qwrtpsdfghjklzxcvbnmйцкнгшщзхфвпрлджчсмтб"
 
 vowels_count = sum(1 for char in all_text if char in vowels_list)
 consonants_count = sum(1 for char in all_text if char in consonants_list)
