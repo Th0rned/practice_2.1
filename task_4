@@ -2,27 +2,25 @@ import math
 import os
 from datetime import datetime
 
-LOG_FILE = "calculator.log"
-
 def log_operation(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
+    with open("calculator.log", "a", encoding="utf-8") as f:
         f.write(f"[{timestamp}] {message}\n")
 
 def show_history():
-    if not os.path.exists(LOG_FILE):
+    if not os.path.exists("calculator.log"):
         print("\nИстория операций пуста.")
         return
     
     print("\n--- Последние 5 операций ---")
-    with open(LOG_FILE, "r", encoding="utf-8") as f:
+    with open("calculator.log", "r", encoding="utf-8") as f:
         lines = f.readlines()
         for line in lines[-5:]:
             print(line.strip())
     print("----------------------------\n")
 
 def clear_log():
-    open(LOG_FILE, 'w').close()
+    open("calculator.log", 'w').close()
     print("\nФайл успешно очищен.")
 
 def main():
