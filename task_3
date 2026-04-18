@@ -1,0 +1,58 @@
+import csv
+
+FILENAME = 'products.csv'
+
+def read_products():
+    products = []
+    try:
+        with open(FILENAME, mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, delimiter=' ')
+            for row in reader:
+                row['Цена'] = int(row['Цена'])
+                row['Количество'] = int(row['Количество'])
+                products.append(row)
+    except FileNotFoundError:
+        print("Файл не найден. Будет создан новый.")
+    return products
+
+def save_products(products, filename=FILENAME):
+    with open(filename, mode='w', encoding='utf-8', newline='') as f:
+        fieldnames = ['Название', 'Цена', 'Количество']
+        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=' ')
+        writer.writeheader()
+        writer.writerows(products)
+
+def main():
+    products = read_products()
+
+    while True:
+        print("\n1. Добавить товар\n2. Найти товар\n3. Общая стоимость\n4. Сохранить сортировку по цене\n5. Выход")
+        choice = input("Выберите действие: ")
+
+        if choice == '1':
+            name = input("Название: ")
+            price = int(input("Цена: "))
+            qty = int(input("Количество: "))
+            products.append({'Название': name, 'Цена': price, 'Количество': qty})
+            save_products(products)
+            print("Товар добавлен и сохранен.")
+
+        elif choice == '2':
+            search = input("Что ищем? ").lower()
+            found = [p for p in products if search in p['Название'].lower()]
+            print("Результаты:", found if found else "Ничего не найдено")
+
+        elif choice == '3':
+            total = sum(p['Цена'] * p['Количество'] for p in products)
+            print(f"Общая стоимость всех товаров на складе: {total}")
+
+        elif choice == '4':
+            sorted_p = sorted(products, key=lambda x: x['Цена'])
+            save_products(sorted_p, 'sorted_products.csv')
+            print("Отсортированный список сохранен в sorted_products.csv")
+
+        elif choice == '5':
+            break
+
+if __name__ == "__main__":
+    main()
