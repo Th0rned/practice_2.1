@@ -6,8 +6,8 @@ def transform_byte(byte, key, shift, encrypt=True):
         byte ^= key
         return ((byte >> shift) | (byte << (8 - shift))) & 0xFF
 
-def process_file(input_path, output_path, key, encrypt=True):
-    with open(input_path, 'rb') as f_in, open(output_path, 'wb') as f_out:
+def process_file('input.txt', 'output.txt', key, encrypt=True):
+    with open('input.txt', 'rb') as f_in, open('output.txt', 'wb') as f_out:
         data = f_in.read()
         transformed = bytes([transform_byte(b, key, 2, encrypt) for b in data])
         f_out.write(transformed)
