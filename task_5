@@ -20,7 +20,7 @@ def show_books(books):
     print("\n--- Список книг ---")
     for b in books:
         status = "Доступна" if b['available'] else "Взята"
-        print(f"ID: {b['id']} | '{b['title']}' — {b['author']} | {b['year']} [{status}]")
+        print(f"ID: {b['id']} | '{b['title']}' — {b['author']} {b['year']} [{status}]")
 
 def find_books(books):
     query = input("Введите название или автора для поиска: ").lower()
